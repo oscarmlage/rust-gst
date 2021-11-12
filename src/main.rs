@@ -26,11 +26,11 @@ fn main() {
         }
 
         ("tasks", Some(matches)) => {
-            let project = matches.value_of("project").unwrap_or("");
-            println!("Tasks");
-            if !project.is_empty() {
-                println!("Project: {}", project);
-            }
+            console::info("List of tasks");
+            let project = matches.value_of("project")
+                .unwrap_or("0").trim().parse()
+                .expect("Type a number!");
+            cmd::get_tasks(&config_file, project);
         }
 
         _ => console::error("Whut!!!"),
