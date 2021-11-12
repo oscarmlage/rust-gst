@@ -8,6 +8,5 @@ edition = "2021"
 [dependencies]
 clap = "2"
 termcolor = "1.0.4"
-# configparser = "3.0.0"
 toml = "0.4.2"
 serde = { version = "1.0", features = ["derive"] }
