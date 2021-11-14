@@ -7,16 +7,14 @@ use toml;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
-    url: String,
-    api: String,
-    key: String,
+    pub url: String,
+    pub key: String,
 }
 
 impl Config {
     pub fn default() -> Config {
         Config {
             url: "https://uri".to_string(),
-            api: "/v1/api".to_string(),
             key: "s3cr3tk3y".to_string(),
         }
     }
