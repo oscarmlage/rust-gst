@@ -18,13 +18,15 @@ fn main() {
         }
     };
 
-    // Start program flow
+    // Command matcher
     match matches.subcommand() {
+        // gst projects
         ("projects", Some(_matches)) => {
             console::info("List of projects");
             cmd::get_projects(&config_file);
         }
 
+        // gst tasks [--project]
         ("tasks", Some(matches)) => {
             console::info("List of tasks");
             let project = matches.value_of("project")
