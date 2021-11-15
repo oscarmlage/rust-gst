@@ -20,6 +20,10 @@ pub fn build_cli() -> App<'static, 'static> {
             .about("List of active projects"),
         )
         .subcommand(
+            SubCommand::with_name("stamps")
+            .about("List last stamps"),
+        )
+        .subcommand(
             SubCommand::with_name("tasks")
             .about("List of active tasks grouped by project")
             .arg(

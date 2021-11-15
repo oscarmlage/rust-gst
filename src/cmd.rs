@@ -35,6 +35,22 @@ struct TasksResponse {
     error: String,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+struct Stamp {
+    id: u32,
+    user_id: u32,
+    project_id: u32,
+    start: Option<String>,
+    end: Option<String>,
+    description: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct StampsResponse {
+    data: Vec<Stamp>,
+    error: String,
+}
+
 pub fn api_call(config_file: &PathBuf, endpoint: String) -> Result<reqwest::blocking::Response, reqwest::Error> {
     // Config
     let mut default_config = config::Config::default();
@@ -93,6 +109,23 @@ pub fn get_tasks(config_file: &PathBuf, project: u32) {
                         }
                     }
                 }
+            }
+        }
+        Err(e) => println!("Error happened: {}", e),
+    }
+}
+
+pub fn get_stamps(config_file: &PathBuf) {
+    let response = api_call(&config_file, String::from("stamps"));
+    // eprintln!("{:#?}", response);
+    match response {
+        Ok(parsed) => {
+            let stamps = parsed.json::<StampsResponse>().unwrap();
+            eprintln!("{:#?}", stamps);
+            for stamp in stamps.data {
+                println!("⏳ ({id}) {description}",
+                    id=stamp.id,
+                    description=stamp.description.unwrap());
             }
         }
         Err(e) => println!("Error happened: {}", e),

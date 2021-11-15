@@ -35,6 +35,12 @@ fn main() {
             cmd::get_tasks(&config_file, project);
         }
 
+        // gst stamps
+        ("stamps", Some(_matches)) => {
+            console::info("List of stamps");
+            cmd::get_stamps(&config_file);
+        }
+
         _ => console::error("Whut!!!"),
     }
 }
