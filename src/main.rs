@@ -27,9 +27,9 @@ fn main() {
         }
 
         // gst tasks [--project]
-        ("tasks", Some(matches)) => {
+        ("tasks", Some(_matches)) => {
             console::info("List of tasks");
-            let project = matches.value_of("project")
+            let project = _matches.value_of("project")
                 .unwrap_or("0").trim().parse()
                 .expect("Type a number!");
             cmd::get_tasks(&config_file, project);

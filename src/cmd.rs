@@ -52,21 +52,50 @@ pub fn api_call(config_file: &PathBuf, endpoint: String) -> Result<reqwest::bloc
 }
 
 pub fn get_projects(config_file: &PathBuf) {
-    let projects_json = api_call(&config_file, String::from("stamps"));
-    println!("{:?}", projects_json);
+    let response = api_call(&config_file, String::from("projects"));
+    // eprintln!("{:#?}", response);
+    match response {
+        Ok(parsed) => {
+            let projects = parsed.json::<ProjectsResponse>().unwrap();
+            for project in projects.data {
+                println!("➡️  ({id}) {name} (uid: {uid})",
+                    id=project.id,
+                    name=project.name,
+                    uid=project.user_id);
+            }
+        }
+        Err(e) => println!("Error happened: {}", e),
+    }
 }
 
-pub fn get_tasks(config_file: &PathBuf, project: i32) {
-    // Config
-    let mut default_config = config::Config::default();
-    let config = default_config.parse(&config_file);
-
-    // Call api
-    println!("Call API, Config: {:?}", config);
-
-    // Return json result
-    let tasks = String::from("tasks");
-    println!("{}", tasks);
-
-    println!("{}", project);
+pub fn get_tasks(config_file: &PathBuf, project: u32) {
+    let response = api_call(&config_file, String::from("tasks"));
+    // eprintln!("{:#?}", response);
+    match response {
+        Ok(parsed) => {
+            // println!("{:?}", parsed);
+            let tasks = parsed.json::<TasksResponse>().unwrap();
+            for task in tasks.data {
+                match project {
+                    // 0 means no project, print them all
+                    0 => {
+                        println!("✳️  (pr: {projectid}) ({id}) {name}",
+                        projectid=task.project_id,
+                        id=task.id,
+                        name=task.name);
+                    },
+                    // Otherwise but 0, print only task with that project.id
+                    _ => {
+                        if project == task.project_id {
+                            println!("✳️  (pr: {projectid}) ({id}) {name}",
+                            projectid=task.project_id,
+                            id=task.id,
+                            name=task.name);
+                        }
+                    }
+                }
+            }
+        }
+        Err(e) => println!("Error happened: {}", e),
+    }
 }
