@@ -58,10 +58,9 @@ pub fn get_projects(config_file: &PathBuf) {
         Ok(parsed) => {
             let projects = parsed.json::<ProjectsResponse>().unwrap();
             for project in projects.data {
-                println!("➡️  ({id}) {name} (uid: {uid})",
+                println!("➡️  ({id}) {name}",
                     id=project.id,
-                    name=project.name,
-                    uid=project.user_id);
+                    name=project.name);
             }
         }
         Err(e) => println!("Error happened: {}", e),
