@@ -35,7 +35,7 @@ fn main() {
             cmd::get_tasks(&config_file, project);
         }
 
-        // gst stamps
+        // gst stamps [--last]
         ("stamps", Some(_matches)) => {
             console::info("List of stamps");
             let last = _matches.occurrences_of("last");
