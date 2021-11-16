@@ -38,7 +38,8 @@ fn main() {
         // gst stamps
         ("stamps", Some(_matches)) => {
             console::info("List of stamps");
-            cmd::get_stamps(&config_file);
+            let last = _matches.occurrences_of("last");
+            cmd::get_stamps(&config_file, last);
         }
 
         _ => console::error("Whut!!!"),

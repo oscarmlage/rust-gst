@@ -21,7 +21,13 @@ pub fn build_cli() -> App<'static, 'static> {
         )
         .subcommand(
             SubCommand::with_name("stamps")
-            .about("List last stamps"),
+            .about("List last stamps")
+            .arg(
+                Arg::with_name("last")
+                .short("l")
+                .long("last")
+                .help("List last stamp only")
+            ),
         )
         .subcommand(
             SubCommand::with_name("tasks")

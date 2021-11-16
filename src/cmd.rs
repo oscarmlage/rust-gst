@@ -115,17 +115,18 @@ pub fn get_tasks(config_file: &PathBuf, project: u32) {
     }
 }
 
-pub fn get_stamps(config_file: &PathBuf) {
+pub fn get_stamps(config_file: &PathBuf, last: u64) {
     let response = api_call(&config_file, String::from("stamps"));
     // eprintln!("{:#?}", response);
     match response {
         Ok(parsed) => {
             let stamps = parsed.json::<StampsResponse>().unwrap();
-            eprintln!("{:#?}", stamps);
+            // eprintln!("{:#?}", stamps);
             for stamp in stamps.data {
                 println!("⏳ ({id}) {description}",
                     id=stamp.id,
                     description=stamp.description.unwrap());
+                if last != 0 { break; }
             }
         }
         Err(e) => println!("Error happened: {}", e),
