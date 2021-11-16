@@ -11,6 +11,8 @@ $ gst projects [pr]
   - List of projects
 $ gst tasks [t] [--project|-pr] 11
   - List of tasks, if -pr grouped per projects else just last open tasks
+$ gst stamps [--last]
+  - List last stamps and status (open, closed...), like a summary
 $ gst start -t 212
   - Add new stamp to the task 212
 $ gst stop
@@ -19,8 +21,6 @@ $ gst description "Task description"
   - Add description to last stamp
 $ gst addtask [--project|-pr] 11 "Task title"
   - Add a task to a project
-$ gst status [--last]
-  - List last stamps and status (open, closed...), like a summary
 ```
 
 ## Why Rust?
