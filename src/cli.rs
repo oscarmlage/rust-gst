@@ -41,4 +41,32 @@ pub fn build_cli() -> App<'static, 'static> {
                 .takes_value(true),
             ),
         )
+        .subcommand(
+            SubCommand::with_name("addtask")
+            .about("Add a new task to a project")
+            .arg(
+                Arg::with_name("project")
+                .short("p")
+                .long("project")
+                .value_name("PROJECT")
+                .help("Provides a project to list tasks from")
+                .takes_value(true),
+            )
+            .arg(
+                Arg::with_name("title")
+                .short("t")
+                .long("title")
+                .value_name("TITLE")
+                .help("Task title")
+                .takes_value(true),
+            )
+            .arg(
+                Arg::with_name("description")
+                .short("d")
+                .long("description")
+                .value_name("DESCRIPTION")
+                .help("Task description")
+                .takes_value(true),
+            )
+        )
 }

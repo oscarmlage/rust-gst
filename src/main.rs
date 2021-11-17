@@ -2,7 +2,6 @@ use std::{process};
 use std::path::PathBuf;
 
 mod cli;
-mod cmd;
 pub mod console;
 
 #[path = "./models/tasks.rs"]
@@ -64,6 +63,32 @@ fn main() {
                 error: "".to_string(),
             };
             stamps.get(&config_file, last);
+        }
+
+        // gst addtask [--project] "title"
+        ("addtask", Some(_matches)) => {
+            console::info("Add a new task");
+            let project: u32 = _matches.value_of("project")
+                .unwrap_or("0").trim().parse()
+                .expect("Type a number!");
+            let title: &str = _matches.value_of("title")
+                .unwrap_or("").trim();
+            let description: &str = _matches.value_of("description")
+                .unwrap_or("").trim();
+            let task = Task {
+                id: 0,
+                name: title.to_string(),
+                description: Some(description.to_string()),
+                project_id: project,
+                estimated: Some("1:00:00".to_string()),
+            };
+            // println!("{:?}", task);
+            let added = task.add(&config_file);
+            // println!("{:#?}", added);
+            match added.status() {
+                reqwest::StatusCode::OK => println!("OK"),
+                other => println!("KO: {:?}, something happened", other),
+            }
         }
 
         _ => console::error("Whut!!!"),
