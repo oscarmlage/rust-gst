@@ -20,7 +20,7 @@ pub struct Stamps {
 }
 
 impl Stamps {
-    pub fn get(&self, config_file: &PathBuf, last: u64) {
+    pub fn get(&self, config_file: &PathBuf, project: u32, last: u64) {
         // Config
         let mut default_config = config::Config::default();
         let config = default_config.parse(&config_file);
@@ -39,10 +39,23 @@ impl Stamps {
                 let stamps = parsed.json::<Stamps>().unwrap();
                 // eprintln!("{:#?}", stamps);
                 for stamp in stamps.data {
-                    println!("⏳ ({id}) {description}",
-                        id=stamp.id,
-                        description=stamp.description.unwrap());
-                    if last != 0 { break; }
+                    match project {
+                        0 => {
+                            println!("⏳ ({id}) {description}",
+                                id=stamp.id,
+                                description=stamp.description.unwrap());
+                            if last != 0 { break; }
+                        },
+
+                        _ => {
+                            if project == stamp.project_id {
+                                println!("⏳ ({id}) {description}",
+                                    id=stamp.id,
+                                    description=stamp.description.unwrap());
+                                if last != 0 { break; }
+                            }
+                        }
+                    }
                 }
             }
             Err(e) => println!("Error happened: {}", e),

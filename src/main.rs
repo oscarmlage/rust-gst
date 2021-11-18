@@ -55,18 +55,21 @@ fn main() {
             tasks.get(&config_file, project, last);
         }
 
-        // gst stamps [--last]
+        // gst stamps [--project] [--last]
         ("stamps", Some(_matches)) => {
             console::info("List of stamps");
             let last = _matches.occurrences_of("last");
+            let project = _matches.value_of("project")
+                .unwrap_or("0").trim().parse()
+                .expect("Type a number!");
             let stamps = Stamps {
                 data: Vec::new(),
                 error: "".to_string(),
             };
-            stamps.get(&config_file, last);
+            stamps.get(&config_file, project, last);
         }
 
-        // gst addtask [--project] "title"
+        // gst addtask --project NUM --title "title" --description "desc"
         ("addtask", Some(_matches)) => {
             console::info("Add a new task");
             let project: u32 = _matches.value_of("project")

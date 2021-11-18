@@ -23,6 +23,14 @@ pub fn build_cli() -> App<'static, 'static> {
             SubCommand::with_name("stamps")
             .about("List last stamps")
             .arg(
+                Arg::with_name("project")
+                .short("p")
+                .long("project")
+                .value_name("PROJECT")
+                .help("Provides a project to list stamps from")
+                .takes_value(true),
+            )
+            .arg(
                 Arg::with_name("last")
                 .short("l")
                 .long("last")
