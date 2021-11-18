@@ -32,6 +32,23 @@ impl Stamp {
 
         res.unwrap()
     }
+    #[tokio::main]
+    pub async fn stop(&self, config_file: &PathBuf) -> reqwest::Response {
+        // Config
+        let mut default_config = config::Config::default();
+        let config = default_config.parse(&config_file);
+
+        // Call api
+        let endpoint = format!("{}{}", &config.url, "stamp/stop");
+        let client = reqwest::Client::new();
+        let res = client.post(endpoint)
+            .header("Authorization", &config.key)
+            .json(&self)
+            .send()
+            .await;
+
+        res.unwrap()
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]

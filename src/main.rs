@@ -130,6 +130,23 @@ fn main() {
                     }
                 }
             }
+            else if stop == 1 {
+                console::info("Stop last stamp");
+                let stamp = Stamp {
+                    id: 0,
+                    user_id: 0,
+                    project_id: 0,
+                    start: Some("".to_string()),
+                    end: Some("".to_string()),
+                    description: Some("".to_string()),
+                    task_id: Some(0),
+                };
+                let stopped = stamp.stop(&config_file);
+                match stopped.status() {
+                    reqwest::StatusCode::OK => println!("OK"),
+                    other => println!("KO: {:?}, something happened", other),
+                }
+            }
         }
 
         _ => console::error("Whut!!!"),
