@@ -11,6 +11,9 @@ pub struct Stamp {
     pub start: Option<String>,
     pub end: Option<String>,
     pub description: Option<String>,
+    pub task_id: Option<u32>,
+}
+
 impl Stamp {
     #[tokio::main]
     pub async fn add(&self, config_file: &PathBuf) -> reqwest::Response {
