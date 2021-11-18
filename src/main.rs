@@ -41,9 +41,10 @@ fn main() {
             projects.get(&config_file);
         }
 
-        // gst tasks [--project]
+        // gst tasks [--project] [--last]
         ("tasks", Some(_matches)) => {
             console::info("List of tasks");
+            let last = _matches.occurrences_of("last");
             let project = _matches.value_of("project")
                 .unwrap_or("0").trim().parse()
                 .expect("Type a number!");
@@ -51,7 +52,7 @@ fn main() {
                 data: Vec::new(),
                 error: "".to_string(),
             };
-            tasks.get(&config_file, project);
+            tasks.get(&config_file, project, last);
         }
 
         // gst stamps [--last]

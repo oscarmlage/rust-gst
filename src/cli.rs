@@ -39,6 +39,12 @@ pub fn build_cli() -> App<'static, 'static> {
                 .value_name("PROJECT")
                 .help("Provides a project to list tasks from")
                 .takes_value(true),
+            )
+            .arg(
+                Arg::with_name("last")
+                .short("l")
+                .long("last")
+                .help("List last task only")
             ),
         )
         .subcommand(

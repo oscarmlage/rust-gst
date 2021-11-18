@@ -40,7 +40,7 @@ pub struct Tasks {
 }
 
 impl Tasks {
-    pub fn get(&self, config_file: &PathBuf, project: u32) {
+    pub fn get(&self, config_file: &PathBuf, project: u32, last: u64) {
         // Config
         let mut default_config = config::Config::default();
         let config = default_config.parse(&config_file);
@@ -65,6 +65,7 @@ impl Tasks {
                             projectid=task.project_id,
                             id=task.id,
                             name=task.name);
+                            if last != 0 { break; }
                         },
                         // Otherwise but 0, print only task with that project.id
                         _ => {
@@ -73,6 +74,7 @@ impl Tasks {
                                 projectid=task.project_id,
                                 id=task.id,
                                 name=task.name);
+                                if last != 0 { break; }
                             }
                         }
                     }
