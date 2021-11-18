@@ -147,6 +147,15 @@ fn main() {
                     other => println!("KO: {:?}, something happened", other),
                 }
             }
+            else if update == 1 {
+                console::info("Update last stamp");
+                // let stamp = {
+                //     // description
+                //     // dstart
+                //     // dend
+                // };
+                // stamp.update();
+            }
         }
 
         _ => console::error("Whut!!!"),
