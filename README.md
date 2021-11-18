@@ -7,20 +7,20 @@ Gst is a cli command that consumes a remote API to achieve different actions abo
 We're looking for a cli command that acts like this:
 
 ```sh
-$ gst projects [pr]
+$ gst projects
   - List of projects
-$ gst tasks [t] [--project|-pr] 11
+$ gst tasks [--project|-p] 11 [--last|-l]
   - List of tasks, if -pr grouped per projects else just last open tasks
-$ gst stamps [--last]
+$ gst stamps [--project|-p] [--last|-l]
   - List last stamps and status (open, closed...), like a summary
-$ gst start -t 212
-  - Add new stamp to the task 212
-$ gst stop
-  - Stop the last open stamp
-$ gst description "Task description"
-  - Add description to last stamp
-$ gst addtask [--project|-pr] 11 "Task title"
+$ gst addtask [--project|-p] 11 -t "Task title"
   - Add a task to a project
+$ gst stamp --start -t 212 -d "stamp description"
+  - Add new stamp to the task 212
+$ gst stamp --stop
+  - Stop the last open stamp
+$ gst stamp --description "Task description"
+  - Add description to last stamp
 ```
 
 ## Why Rust?
