@@ -14,7 +14,7 @@ use projects::Projects;
 
 #[path = "./models/stamps.rs"]
 mod stamps;
-use stamps::Stamps;
+use stamps::{Stamp, Stamps};
 
 fn main() {
     // Get cli matches
@@ -92,6 +92,43 @@ fn main() {
             match added.status() {
                 reqwest::StatusCode::OK => println!("OK"),
                 other => println!("KO: {:?}, something happened", other),
+            }
+        }
+
+        // gst stamp --start --task NUM --description "desc" --dstart "20120101" --dend "20120101"
+        // gst stamp --stop
+        // gst stamp --update --description "desc" --dstart "20120101" --dend "20120101"
+        ("stamp", Some(_matches)) => {
+            let start = _matches.occurrences_of("start");
+            let stop = _matches.occurrences_of("stop");
+            let update = _matches.occurrences_of("update");
+            let task: u32 = _matches.value_of("task")
+                .unwrap_or("0").trim().parse()
+                .expect("Type a number!");
+            let description: &str = _matches.value_of("description").unwrap_or("").trim();
+            let dstart: &str = _matches.value_of("dstart").unwrap_or("").trim();
+            let dend: &str = _matches.value_of("dend").unwrap_or("").trim();
+            if start == 1 {
+                console::info("Add a new stamp");
+                match task {
+                    0 => panic!("Need some task number to add the stamp"),
+                    _ => {
+                        let stamp = Stamp {
+                            id: 0,
+                            user_id: 0,
+                            project_id: 0,
+                            start: Some(dstart.to_string()),
+                            end: Some(dend.to_string()),
+                            description: Some(description.to_string()),
+                            task_id: Some(task),
+                        };
+                        let added = stamp.add(&config_file);
+                        match added.status() {
+                            reqwest::StatusCode::OK => println!("OK"),
+                            other => println!("KO: {:?}, something happened", other),
+                        }
+                    }
+                }
             }
         }
 
