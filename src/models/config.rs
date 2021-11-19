@@ -9,6 +9,7 @@ use toml;
 pub struct Config {
     pub url: String,
     pub key: String,
+    pub user_id: u32,
 }
 
 impl Config {
@@ -16,6 +17,7 @@ impl Config {
         Config {
             url: "https://uri".to_string(),
             key: "s3cr3tk3y".to_string(),
+            user_id: 0,
         }
     }
     pub fn parse(&mut self, config_file: &PathBuf) -> Config {
