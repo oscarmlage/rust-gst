@@ -91,7 +91,7 @@ fn main() {
             // println!("{:#?}", added);
             match added.status() {
                 reqwest::StatusCode::OK => println!("OK"),
-                other => println!("KO: {:?}, something happened", other),
+                err => println!("KO: {:?}, something happened", err),
             }
         }
 
@@ -125,7 +125,7 @@ fn main() {
                         let added = stamp.add(&config_file);
                         match added.status() {
                             reqwest::StatusCode::OK => println!("OK"),
-                            other => println!("KO: {:?}, something happened", other),
+                            err => println!("KO: {:?}, something happened", err),
                         }
                     }
                 }
@@ -144,7 +144,7 @@ fn main() {
                 let stopped = stamp.stop(&config_file);
                 match stopped.status() {
                     reqwest::StatusCode::OK => println!("OK"),
-                    other => println!("KO: {:?}, something happened", other),
+                    err => println!("KO: {:?}, something happened", err),
                 }
             }
             else if update == 1 {
