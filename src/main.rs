@@ -95,9 +95,7 @@ fn main() {
             }
         }
 
-        // gst stamp --start --task NUM --description "desc" --dstart "20120101" --dend "20120101"
-        // gst stamp --stop
-        // gst stamp --update --description "desc" --dstart "20120101" --dend "20120101"
+        // gst stamp [--start | --stop | --update]
         ("stamp", Some(_matches)) => {
             let start = _matches.occurrences_of("start");
             let stop = _matches.occurrences_of("stop");
@@ -108,6 +106,7 @@ fn main() {
             let description: &str = _matches.value_of("description").unwrap_or("").trim();
             let dstart: &str = _matches.value_of("dstart").unwrap_or("").trim();
             let dend: &str = _matches.value_of("dend").unwrap_or("").trim();
+            // gst stamp --start --task NUM --description "desc" --dstart "20120101" --dend "20120101"
             if start == 1 {
                 console::info("Add a new stamp");
                 match task {
@@ -130,6 +129,7 @@ fn main() {
                     }
                 }
             }
+            // gst stamp --stop
             else if stop == 1 {
                 console::info("Stop last stamp");
                 let stamp = Stamp {
@@ -147,6 +147,7 @@ fn main() {
                     err => println!("KO: {:?}, something happened", err),
                 }
             }
+            // gst stamp --update --description "desc" --dstart "20120101" --dend "20120101"
             else if update == 1 {
                 console::info("Update last stamp");
                 // let stamp = {
