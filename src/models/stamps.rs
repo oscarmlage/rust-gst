@@ -15,23 +15,26 @@ pub struct Stamp {
 }
 
 impl Stamp {
-    #[tokio::main]
-    pub async fn add(&self, config_file: &PathBuf) -> reqwest::Response {
+    pub fn new(config_file: &PathBuf,
+               dstart: &str,
+               dend: &str,
+               description: &str,
+               task: u32
+            ) -> Stamp {
         // Config
         let mut default_config = config::Config::default();
         let config = default_config.parse(&config_file);
-
-        // Call api
-        let endpoint = format!("{}{}", &config.url, "stamp/add");
-        let client = reqwest::Client::new();
-        let res = client.post(endpoint)
-            .header("Authorization", &config.key)
-            .json(&self)
-            .send()
-            .await;
-
-        res.unwrap()
+        Stamp {
+            id: 0,
+            user_id: config.user_id,
+            project_id: 0,
+            start: Some(dstart.to_string()),
+            end: Some(dend.to_string()),
+            description: Some(description.to_string()),
+            task_id: Some(task),
+        }
     }
+
     #[tokio::main]
     pub async fn stop(&self, config_file: &PathBuf) -> reqwest::Response {
         // Config
