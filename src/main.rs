@@ -112,16 +112,8 @@ fn main() {
                 match task {
                     0 => panic!("Need some task number to add the stamp"),
                     _ => {
-                        let stamp = Stamp {
-                            id: 0,
-                            user_id: 0,
-                            project_id: 0,
-                            start: Some(dstart.to_string()),
-                            end: Some(dend.to_string()),
-                            description: Some(description.to_string()),
-                            task_id: Some(task),
-                        };
-                        let added = stamp.add(&config_file);
+                        let stamp = Stamp::new(&config_file, dstart, dend, description, task);
+                        let added = stamp.api_post(&config_file, "stamp/add");
                         match added.status() {
                             reqwest::StatusCode::OK => println!("OK"),
                             err => println!("KO: {:?}, something happened", err),
@@ -132,16 +124,8 @@ fn main() {
             // gst stamp --stop
             else if stop == 1 {
                 console::info("Stop last stamp");
-                let stamp = Stamp {
-                    id: 0,
-                    user_id: 0,
-                    project_id: 0,
-                    start: Some("".to_string()),
-                    end: Some("".to_string()),
-                    description: Some("".to_string()),
-                    task_id: Some(0),
-                };
-                let stopped = stamp.stop(&config_file);
+                let stamp = Stamp::new(&config_file, "", "", "", 0);
+                let stopped = stamp.api_post(&config_file, "stamp/stop");
                 match stopped.status() {
                     reqwest::StatusCode::OK => println!("OK"),
                     err => println!("KO: {:?}, something happened", err),
@@ -150,12 +134,12 @@ fn main() {
             // gst stamp --update --description "desc" --dstart "20120101" --dend "20120101"
             else if update == 1 {
                 console::info("Update last stamp");
-                // let stamp = {
-                //     // description
-                //     // dstart
-                //     // dend
-                // };
-                // stamp.update();
+                let stamp = Stamp::new(&config_file, dstart, dend, description, task);
+                let updated = stamp.api_post(&config_file, "stamp/update");
+                match updated.status() {
+                    reqwest::StatusCode::OK => println!("OK"),
+                    err => println!("KO: {:?}, something happened", err),
+                }
             }
         }
 
