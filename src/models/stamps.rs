@@ -12,6 +12,7 @@ pub struct Stamp {
     pub end: Option<String>,
     pub description: Option<String>,
     pub task_id: Option<u32>,
+    pub duration: Option<String>,
 }
 
 impl Stamp {
@@ -19,7 +20,8 @@ impl Stamp {
                dstart: &str,
                dend: &str,
                description: &str,
-               task: u32
+               task: u32,
+               duration: &str,
             ) -> Stamp {
         // Config
         let mut default_config = config::Config::default();
@@ -32,6 +34,7 @@ impl Stamp {
             end: Some(dend.to_string()),
             description: Some(description.to_string()),
             task_id: Some(task),
+            duration: Some(duration.to_string()),
         }
     }
 
@@ -80,19 +83,30 @@ impl Stamps {
                 let stamps = parsed.json::<Stamps>().unwrap();
                 // eprintln!("{:#?}", stamps);
                 for stamp in stamps.data {
+                    let mut open: String = String::from("");
+                    match stamp.end {
+                        None => open = "⏸️ ".to_string(),
+                        _ => {
+                            let op: String = format_args!("{duration}",
+                                duration=stamp.duration.unwrap().to_string()
+                                ).to_string();
+                            open = op;
+                        }
+                    }
+                    let output: String = format_args!("⏳ ({id}) {open} - {description}",
+                        open=open,
+                        id=stamp.id,
+                        description=stamp.description.unwrap()
+                        ).to_string();
                     match project {
                         0 => {
-                            println!("⏳ ({id}) {description}",
-                                id=stamp.id,
-                                description=stamp.description.unwrap());
+                            println!("{}", output);
                             if last != 0 { break; }
                         },
 
                         _ => {
                             if project == stamp.project_id {
-                                println!("⏳ ({id}) {description}",
-                                    id=stamp.id,
-                                    description=stamp.description.unwrap());
+                                println!("{}", output);
                                 if last != 0 { break; }
                             }
                         }
